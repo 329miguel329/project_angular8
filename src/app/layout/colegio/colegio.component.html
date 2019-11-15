@@ -1,0 +1,33 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Colegio'" [icon]="'fa-user'"></app-page-header>
+    <div class="row">
+        <div class="col col-xl-12 col-lg-12">
+            <div class="card-header">
+                List of students available in the system
+            </div>
+            <div class="card-body table-responsive">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                    <thead>
+                        <tr>
+                            <th>Código Colegio</th>
+                            <th>Nombre Colegio</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="colegios?.length !== 0">
+                        <tr *ngFor="let colegio of colegios">
+                            <td>{{ colegio.nombre }}</td>
+                            <td>{{ colegio.codigo }}</td>
+                            <td>
+                                <a routerLink="/colegio/{{ colegio.codigo }}" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                                    <i class="fa fa-fw fa-graph"></i>&nbsp;
+                                    <span>{{ colegio.codigo }}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

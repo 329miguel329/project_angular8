@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { DataTableDirective } from 'angular-datatables';
 
 class Person {
   id: number;
@@ -22,8 +23,11 @@ class DataTablesResponse {
   animations: [routerTransition()]
 })
 export class TablesComponent implements OnInit {
-  dtOptions: DataTables.Settings = {};
-  persons: Person[];
+    @ViewChild(DataTableDirective, {static: false})
+    dtElement: DataTableDirective;
+    dtOptions: any = {};
+    // dtOptions: DataTables.Settings = {};
+    persons: Person[];
 
   constructor(private http: HttpClient) { }
 
@@ -52,4 +56,13 @@ export class TablesComponent implements OnInit {
       columns: [{ data: 'id' }, { data: 'firstName' }, { data: 'lastName' }]
     };
   }
+
+    // tslint:disable-next-line:use-lifecycle-interface
+    ngAfterViewInit(): void {
+        this.dtElement.dtInstance.then((dtInstance: any) => {
+            // tslint:disable-next-line:no-console
+            console.info('foobar');
+            dtInstance.columns.adjust();
+        });
+    }
 }
