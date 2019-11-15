@@ -3,19 +3,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { routerTransition } from '../../router.animations';
 import { ServicioUsuario } from '../servicios/usuario.service';
 import { ServicioEstudiante } from '../servicios/estudiante.service';
+import { ActivatedRoute } from '@angular/router';
 
-class Person {
-    id: number;
-    firstName: string;
-    lastName: string;
-    url: string;
-    constructor(usuario: any) {
-        this.id = usuario.id;
-        this.firstName = usuario.firstName;
-        this.lastName = usuario.lastName;
-        this.url = usuario.url;
-    }
-}
 
 class Estudiante {
     id: number;
@@ -44,17 +33,24 @@ class DataTablesResponse {
 }
 
 @Component({
-    selector: 'app-usuario',
-    templateUrl: './usuario.component.html',
-    styleUrls: ['./usuario.component.scss'],
+    selector: 'app-estudiante',
+    templateUrl: './estudiante.component.html',
+    styleUrls: ['./estudiante.component.scss'],
     animations: [routerTransition()]
 })
-export class UsuarioComponent implements OnInit {
+export class EstudianteComponent implements OnInit {
     dtOptions: DataTables.Settings = {};
     persons: Estudiante[];
     usuarios = null;
 
-    constructor (private http: HttpClient, private servicioUsuario: ServicioUsuario, private servicioEstudiante: ServicioEstudiante) {}
+    constructor (
+        private route: ActivatedRoute,
+        private http: HttpClient,
+        private servicioUsuario: ServicioUsuario,
+        private servicioEstudiante: ServicioEstudiante
+    ) {
+        console.log(this.route.snapshot.params);
+    }
 
     ngOnInit() {
         const that = this;

@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Usuario'" [icon]="'fa-user'"></app-page-header>
+    <app-page-header [heading]="'Estudiante'" [icon]="'fa-user'"></app-page-header>
     <div class="row">
         <div class="col col-xl-12 col-lg-12">
             <div class="card-header">
@@ -27,8 +27,8 @@
                             <td>{{ person.incorrectas }}</td>
                             <td>{{ person.tiempoRetosSeg }}</td>
                             <td>
-                                <a routerLink="/estudiante/{{ person.id }}" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                                    <i class="fa fa-fw fa-graph"></i>&nbsp;
+                                <a routerLink="/estudiante/{{ person.id }}" class="list-group-item">
+                                    <i class="fa fa-fw fa-user"></i>&nbsp;
                                     <span>{{ person.id }}</span>
                                 </a>
                             </td>

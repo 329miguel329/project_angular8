@@ -12,7 +12,8 @@ const routes: Routes = [
       { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
       { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
       { path: 'colegio', loadChildren: () => import('./colegio/colegio.module').then(m => m.ColegioModule) },
-      { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule) }
+      { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule) },
+      { path: 'estudiante/:id', loadChildren: () => import('./estudiante/estudiante.module').then(m => m.EstudianteModule) }
       // { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },
       // { path: 'bs-element', loadChildren: () => import('./bs-element/bs-element.module').then(m => m.BsElementModule) },
       // { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },
