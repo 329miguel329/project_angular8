@@ -7,11 +7,12 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      { path: '', redirectTo: 'charts', pathMatch: 'prefix' },
+      { path: '', redirectTo: 'colegio', pathMatch: 'prefix' },
       // { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
-      { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
-      { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
+    //   { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
+    //   { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
       { path: 'colegio', loadChildren: () => import('./colegio/colegio.module').then(m => m.ColegioModule) },
+      { path: 'estadistica/:codigo', loadChildren: () => import('./estadistica/estadistica.module').then(m => m.EstadisticaModule) },
       { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule) },
       { path: 'estudiante/:id', loadChildren: () => import('./estudiante/estudiante.module').then(m => m.EstudianteModule) }
       // { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },

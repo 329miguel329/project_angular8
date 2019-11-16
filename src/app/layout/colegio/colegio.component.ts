@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Renderer } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ServicioColegio } from '../servicios/colegio.service';
 import { routerTransition } from '../../router.animations';
+import { Router } from '@angular/router';
 
 class Colegio {
     codigo: string;
@@ -13,7 +14,7 @@ class Colegio {
 }
 
 class DataTablesResponse {
-    data: any[];
+    data: Colegio[];
     draw: number;
     recordsFiltered: number;
     recordsTotal: number;
@@ -25,11 +26,17 @@ class DataTablesResponse {
   styleUrls: ['./colegio.component.scss'],
   animations: [routerTransition()]
 })
-export class ColegioComponent implements OnInit {
+export class ColegioComponent implements OnInit, AfterViewInit {
     dtOptions: DataTables.Settings = {};
     colegios: Colegio[];
 
-    constructor (private http: HttpClient, private servicioColegio: ServicioColegio) { }
+    constructor (
+        private http: HttpClient,
+        private servicioColegio: ServicioColegio,
+        private renderer: Renderer,
+        private router: Router) {
+
+        }
 
     ngOnInit() {
         const that = this;
@@ -41,25 +48,41 @@ export class ColegioComponent implements OnInit {
             processing: true,
             autoWidth: false,
             ajax: (dataTablesParameters: any, callback) => {
-                that.http.post<DataTablesResponse>(
-                    'https://angular-datatables-demo-server.herokuapp.com/',
-                    dataTablesParameters, {}
-                ).subscribe(resp => {
-                    this.servicioColegio.obtenerColegios()
-                        .valueChanges().subscribe(colegios => {
-                            console.log(colegios);
-                            // dataTablesParameters.data =
-                            that.colegios = colegios.map((colegio) => {
-                                return new Colegio(colegio);
-                            });
+                this.servicioColegio.obtenerColegios()
+                    .valueChanges().subscribe(colegios => {
+                        console.log(colegios);
+                        that.colegios = colegios.map((colegio) => {
+                            return new Colegio(colegio);
                         });
-                    callback({
-                        recordsTotal: resp.recordsTotal,
-                        recordsFiltered: resp.recordsFiltered,
-                        data: that.colegios
+                        callback({
+                            recordsTotal: 50,
+                            recordsFiltered: 1,
+                            data: colegios.map((colegio) => {
+                                return new Colegio(colegio);
+                            })
+                        });
                     });
-                });
-            }
+
+            },
+            columns: [
+                {data: 'nombre'},
+                {data: 'codigo'},
+                {
+                    title: 'Action',
+                    render: function (data: any, type: any, full: any) {
+                        // tslint:disable-next-line:max-line-length
+                        return '<a class="list-group-item btn" view-person-id="' + full.codigo + '"><li class="fa fa-eye"></li></a>';
+                    }
+                }
+            ]
         };
+    }
+
+    ngAfterViewInit(): void {
+        this.renderer.listenGlobal('document', 'click', (event) => {
+            if (event.target.hasAttribute('view-person-id')) {
+                this.router.navigate(['/estadistica/' + event.target.getAttribute('view-person-id')]);
+            }
+        });
     }
 }

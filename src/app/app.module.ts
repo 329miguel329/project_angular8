@@ -14,6 +14,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { ServicioEstudiante } from './layout/servicios/estudiante.service';
 import { ServicioColegio } from './layout/servicios/colegio.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAQZ7Ofzt7XegZFq5n8R7ZIFqqcn8PW15E',
@@ -34,7 +35,8 @@ const firebaseConfig = {
         AngularFireModule.initializeApp(firebaseConfig),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
-        AngularFireModule
+        AngularFireModule,
+        NgbModule
     ],
     declarations: [AppComponent],
     providers: [AuthGuard, ServicioUsuario, ServicioEstudiante, ServicioColegio],
