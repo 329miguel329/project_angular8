@@ -1,6 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { ServicioEstudiante } from '../servicios/estudiante.service';
+import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+
+class Estudiante {
+  id: number;
+  nombreCompleto: string;
+  colegio: string;
+  numeroRetos: number;
+  correctas: number;
+  incorrectas: number;
+  tiempoRetosSeg: number;
+  constructor (estudiante: any) {
+    this.id = estudiante.id;
+    this.nombreCompleto = estudiante.nombreCompleto;
+    this.colegio = estudiante.colegio;
+    this.numeroRetos = estudiante.numeroRetos;
+    this.correctas = estudiante.correctas;
+    this.incorrectas = estudiante.incorrectas;
+    this.tiempoRetosSeg = estudiante.tiempoRetosSeg;
+  }
+}
+
+class DataTablesResponse {
+  data: any[];
+  draw: number;
+  recordsFiltered: number;
+  recordsTotal: number;
+}
 
 @Component({
   selector: 'app-estadistica',
@@ -9,6 +38,9 @@ import { ActivatedRoute } from '@angular/router';
   animations: [routerTransition()]
 })
 export class EstadisticaComponent implements OnInit {
+  dtOptions: DataTables.Settings = {};
+  persons: Estudiante[];
+
   // bar chart
   public barChartOptions: any = {
     scaleShowVerticalLines: true,
@@ -40,8 +72,8 @@ export class EstadisticaComponent implements OnInit {
 
   public lineChartData: Array<any> = [
     { data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56], label: 'Series A', fill: false, lineTension: 0 },
-    { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86], label: 'Series B', fill: false, lineTension: 0 },
-    { data: [18, 48, 77, 9, 100, 27, 40, 77, 9, 100], label: 'Series C', fill: false, lineTension: 0 }
+    // { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86], label: 'Series B', fill: false, lineTension: 0 },
+    // { data: [18, 48, 77, 9, 100, 27, 40, 77, 9, 100], label: 'Series C', fill: false, lineTension: 0 }
   ];
   public lineChartLabels: Array<any> = ['M01', 'M02', 'M01', 'M03', 'M01', 'M02', 'M04', 'M01', 'M02', 'M04'];
   public lineChartOptions: any = {
@@ -54,7 +86,7 @@ export class EstadisticaComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    // console.log(e);
+    console.log(e);
   }
 
   public chartHovered(e: any): void {
@@ -75,8 +107,48 @@ export class EstadisticaComponent implements OnInit {
      */
   }
 
-  constructor (private route: ActivatedRoute) {
-    console.log(this.route.snapshot.params);
+  public toggleAccordian(props: NgbPanelChangeEvent): void {
+    props.nextState // true === panel is toggling to an open state
+    // false === panel is toggling to a closed state
+    props.panelId    // the ID of the panel that was clicked
+    // props.preventDefault(); // don't toggle the state of the selected panel
+    if (props.nextState && props.panelId === 'static-5') {
+      // this.initializeDatatable();
+    }
+  }
+
+  public initializeDatatable() {
+    const that = this;
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 15,
+      serverSide: true,
+      processing: true,
+      autoWidth: false,
+      ajax: (dataTablesParameters: any, callback) => {
+        that.http.post<DataTablesResponse>(
+          'https://angular-datatables-demo-server.herokuapp.com/',
+          dataTablesParameters, {}
+        ).subscribe(resp => {
+          this.servicioEstudiante.obtenerEstudiantes()
+            .valueChanges().subscribe(estudiantes => {
+              that.persons = estudiantes.map((estudiante) => {
+                return new Estudiante(estudiante);
+              });
+            });
+
+          callback({
+            recordsTotal: 1,
+            recordsFiltered: 1,
+            data: []
+          });
+        });
+      }
+    };
+  }
+
+  constructor (private route: ActivatedRoute, private http: HttpClient, private servicioEstudiante: ServicioEstudiante) {
   }
 
   ngOnInit() {
@@ -86,5 +158,6 @@ export class EstadisticaComponent implements OnInit {
     this.pieChartType = 'pie';
     this.lineChartLegend = true;
     this.lineChartType = 'line';
+    this.initializeDatatable();
   }
 }

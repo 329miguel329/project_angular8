@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <ngb-accordion [closeOthers]="true" activeIds="static-1">
+  <ngb-accordion [closeOthers]="true" activeIds="static-1" (panelChange)="toggleAccordian($event)">
     <ngb-panel id="static-1" title="Estadisticas generales">
       <ng-template ngbPanelContent>
         <div class="card-body">
@@ -64,9 +64,52 @@
         </div>
       </ng-template>
     </ngb-panel>
-    <ngb-panel id="static-5" title="Estudiantes">
+    <ngb-panel id="static-5" title="Estudiantes"  (click)="chartClicked($event)" >
       <ng-template ngbPanelContent>
-
+        <div class="row">
+          <div class="col col-xl-12 col-lg-12">
+            <div class="card-header">
+              List of students available in the system
+            </div>
+            <div class="card-body table-responsive">
+              <table datatable [dtOptions]="dtOptions" class="row-border hover">
+                <thead>
+                  <tr>
+                    <th>Full name</th>
+                    <th>Colegio</th>
+                    <th>Numero de retos</th>
+                    <th>Correctas</th>
+                    <th>Incorrectas</th>
+                    <th>Tiempo total de retos en segundos</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="persons?.length != 0">
+                  <tr *ngFor="let person of persons">
+                    <td>{{ person.nombreCompleto }}</td>
+                    <td>{{ person.colegio }}</td>
+                    <td>{{ person.numeroRetos }}</td>
+                    <td>{{ person.correctas }}</td>
+                    <td>{{ person.incorrectas }}</td>
+                    <td>{{ person.tiempoRetosSeg }}</td>
+                    <td>
+                      <!-- <a routerLink="/estudiante/{{ person.id }}" [routerLinkActive]="['router-link-active']"
+                        class="list-group-item">
+                        <i class="fa fa-fw fa-graph"></i>&nbsp;
+                        <span>{{ person.id }}</span>
+                      </a> -->
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="persons?.length == 0">
+                  <tr>
+                    <td colspan="3" class="no-data-available">No data!</td>
+                  </tr>
+                <tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </ng-template>
     </ngb-panel>
   </ngb-accordion>
