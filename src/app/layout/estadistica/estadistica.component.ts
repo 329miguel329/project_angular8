@@ -9,29 +9,39 @@ import { ActivatedRoute } from '@angular/router';
   animations: [routerTransition()]
 })
 export class EstadisticaComponent implements OnInit {
-    // bar chart
-    public barChartOptions: any = {
-      scaleShowVerticalLines: true,
-      responsive: true
-    };
-    public barChartLabels: string[] = ['Desempeño', 'Eficiencia', 'Participación y progreso'];
-    public barChartType: string;
-    public barChartLegend: boolean;
+  // bar chart
+  public barChartOptions: any = {
+    scaleShowVerticalLines: true,
+    responsive: true
+  };
+  public barChartLabels: string[] = ['Desempeño', 'Eficiencia', 'Participación y progreso'];
+  public barChartType: string;
+  public barChartLegend: boolean;
 
-    public barChartData: any[] = [
-      { data: [56, 55, 40], label: 'Series A' }
-    ];
+  public barChartData: any[] = [
+    { data: [56, 55, 40], label: 'Series A' }
+  ];
 
-    // Pie
-    public pieChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
-    public pieChartData: number[] = [300, 500, 100];
-    public pieChartType: string;
+  // Pie
+  public pieChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
+  public pieChartData: number[] = [300, 500, 100];
+  public pieChartType: string;
 
   // lineChart
+  public graficosEficiencia: Array<any> = [
+    { name: 'Uso interactivo del ingles' },
+    { name: 'Conocimiento lexical' },
+    { name: 'Conocimiento comunicativo' },
+    { name: 'Conocimiento gramatical' },
+    { name: 'Lectura literal' },
+    { name: 'Lectura inferencial' },
+    { name: 'Conocimiento gramatical y lexical' },
+  ];
+
   public lineChartData: Array<any> = [
-      { data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56], label: 'Series A', fill: false, lineTension: 0 },
-      { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86], label: 'Series B', fill: false, lineTension: 0 },
-      { data: [18, 48, 77, 9, 100, 27, 40, 77, 9, 100], label: 'Series C', fill: false, lineTension: 0 }
+    { data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56], label: 'Series A', fill: false, lineTension: 0 },
+    { data: [28, 48, 40, 19, 86, 27, 90, 40, 19, 86], label: 'Series B', fill: false, lineTension: 0 },
+    { data: [18, 48, 77, 9, 100, 27, 40, 77, 9, 100], label: 'Series C', fill: false, lineTension: 0 }
   ];
   public lineChartLabels: Array<any> = ['M01', 'M02', 'M01', 'M03', 'M01', 'M02', 'M04', 'M01', 'M02', 'M04'];
   public lineChartOptions: any = {
@@ -65,8 +75,8 @@ export class EstadisticaComponent implements OnInit {
      */
   }
 
-  constructor(private route: ActivatedRoute) {
-      console.log(this.route.snapshot.params);
+  constructor (private route: ActivatedRoute) {
+    console.log(this.route.snapshot.params);
   }
 
   ngOnInit() {

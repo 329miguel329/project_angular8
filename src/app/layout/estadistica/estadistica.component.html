@@ -1,43 +1,84 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Estadistica'" [icon]="'fa-bar-chart-o'"></app-page-header>
-    <div class="row">
-        <div class="col col-sm-12">
-            <div class="card mb-3">
-                <div class="card-header">
-                    Estadisticas generales
-                </div>
-                <div class="card-body">
-                    <canvas baseChart height="100px" [data]="pieChartData" [labels]="pieChartLabels"
-                        [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
-                    </canvas>
-                </div>
-                <div class="card-body">
-                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                        [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
-                    </canvas>
-                </div>
-            </div>
+  <app-page-header [heading]="'Estadistica'" [icon]="'fa-bar-chart-o'"></app-page-header>
+  <div class="row">
+    <div class="col col-sm-12">
+      <div class="card mb-3">
+        <div class="card-header">
+          Estadisticas generales
         </div>
-    </div>
-    <div class="row">
-        <div class="col col-sm-12">
-            <div class="card mb-3">
-                <div class="card-header">
-                    Line Chart
-                </div>
-                <div class="card-body">
-                    <canvas baseChart height="130" [datasets]="lineChartData" [labels]="lineChartLabels"
-                        [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
-                        [chartType]="lineChartType" (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
-                    </canvas>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-    </ngb-accordion>
+      </div>
+    </div>
+  </div>
+
+  <ngb-accordion [closeOthers]="true" activeIds="static-1">
+    <ngb-panel id="static-1" title="Estadisticas generales">
+      <ng-template ngbPanelContent>
+        <div class="card-body">
+          <canvas baseChart height="100px" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+        <div class="card-body">
+          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="static-2">
+      <ng-template ngbPanelTitle>
+        Eficiencia
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col col-sm-12">
+            <div class="card mb-3" *ngFor="let graficoEficiencia of graficosEficiencia">
+              <ng-container [ngTemplateOutlet]="templateGraicos"
+                [ngTemplateOutletContext]="{graficoEficiencia:graficoEficiencia}"></ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="static-3" title="Desempeño">
+      <ng-template ngbPanelContent>
+        <div class="card-body">
+          <canvas baseChart height="130" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+            [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="static-4" title="Participación y progreso">
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col col-sm-12">
+            <div class="card mb-3" *ngFor="let graficoEficiencia of graficosEficiencia">
+              <ng-container [ngTemplateOutlet]="templateGraicos"
+                [ngTemplateOutletContext]="{graficoEficiencia:graficoEficiencia}"></ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="static-5" title="Estudiantes">
+      <ng-template ngbPanelContent>
+
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+  <ng-template #templateGraicos let-graficoEficiencia='graficoEficiencia'>
+    <div class="card-header">
+      {{graficoEficiencia.name}}
+    </div>
+    <div class="card-body">
+      <canvas baseChart height="130" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
+  </ng-template>
 </div>
