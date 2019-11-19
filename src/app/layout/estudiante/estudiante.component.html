@@ -1,0 +1,46 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'Estudiante'" [icon]="'fa-user'"></app-page-header>
+  <div class="row">
+    <div class="col col-xl-12 col-lg-12">
+      <div class="card-header">
+        List of students available in the system
+      </div>
+      <div class="card-body table-responsive">
+        <table datatable [dtOptions]="dtOptions" class="row-border hover">
+          <thead>
+            <tr>
+              <th>Full name</th>
+              <th>Colegio</th>
+              <th>Numero de retos</th>
+              <th>Correctas</th>
+              <th>Incorrectas</th>
+              <th>Tiempo total de retos en segundos</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody *ngIf="persons?.length != 0">
+            <tr *ngFor="let person of persons">
+              <td>{{ person.nombreCompleto }}</td>
+              <td>{{ person.colegio }}</td>
+              <td>{{ person.numeroRetos }}</td>
+              <td>{{ person.correctas }}</td>
+              <td>{{ person.incorrectas }}</td>
+              <td>{{ person.tiempoRetosSeg }}</td>
+              <td>
+                <a routerLink="/estudiante/{{ person.id }}" class="list-group-item">
+                  <i class="fa fa-fw fa-user"></i>&nbsp;
+                  <span>{{ person.id }}</span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="persons?.length == 0">
+            <tr>
+              <td colspan="3" class="no-data-available">No data!</td>
+            </tr>
+          <tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

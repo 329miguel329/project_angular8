@@ -20,10 +20,31 @@
     "**/node_modules": true,
     "**/bower_components": true,
     "**/documentation": true
-},
-"editor.detectIndentation": false,
-"editor.tabSize": 2,
-"typescript.format.insertSpaceAfterConstructor": true,
-"javascript.format.insertSpaceAfterConstructor": true,
-"javascript.format.insertSpaceBeforeFunctionParenthesis": true
+  },
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "typescript.format.insertSpaceAfterConstructor": true,
+  "javascript.format.insertSpaceAfterConstructor": true,
+"javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "[typescript]": {
+    "editor.tabSize": 2
+  },
+  "[html]": {
+    "editor.tabSize": 2
+  },
+  "[css]": {
+    "editor.tabSize": 2
+  },
+  "[scss]": {
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.tabSize": 2
+  },
+  "[*]": {
+    "indent_size": 2
+  }
 }
