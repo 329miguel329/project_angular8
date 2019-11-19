@@ -5,7 +5,9 @@ import { ServicioUsuario } from '../servicios/usuario.service';
 import { ServicioEstudiante } from '../servicios/estudiante.service';
 import { ActivatedRoute } from '@angular/router';
 
-
+/**
+ * @class Estudiante
+ */
 class Estudiante {
   id: number;
   nombreCompleto: string;
@@ -14,6 +16,11 @@ class Estudiante {
   correctas: number;
   incorrectas: number;
   tiempoRetosSeg: number;
+  /**
+   * Crear instancia de Estudiante.
+   * @param {object} estudiante
+   * Se revcibe un objeto desde firebase.
+   */
   constructor (estudiante: any) {
     this.id = estudiante.id;
     this.nombreCompleto = estudiante.nombreCompleto;
@@ -25,6 +32,9 @@ class Estudiante {
   }
 }
 
+/**
+ * @class DataTablesResponse
+ */
 class DataTablesResponse {
   data: any[];
   draw: number;
@@ -32,6 +42,11 @@ class DataTablesResponse {
   recordsTotal: number;
 }
 
+/**
+ * @export
+ * @class EstudianteComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-estudiante',
   templateUrl: './estudiante.component.html',
@@ -39,22 +54,26 @@ class DataTablesResponse {
   animations: [routerTransition()]
 })
 export class EstudianteComponent implements OnInit {
-  dtOptions: DataTables.Settings = {};
-  persons: Estudiante[];
-  usuarios = null;
+  dtOptions: DataTables.Settings = {}; // Variable dtOptions para cargar las configuraciones de DataTable
+  persons: Estudiante[]; // Variable persons de tipo Estudiante(Array)
 
+  /**
+   * Crear instancia de EstudianteComponent.
+   * @param {ActivatedRoute} route, con este parametro se reciben los parametros enviados por POST o GET
+   * @param {HttpClient} http, parametro para conectar a un API
+   * @param {ServicioEstudiante} servicioEstudiante, Parametro para recibir los datos desde firebase
+   * @memberof EstudianteComponent
+   */
   constructor (
     private route: ActivatedRoute,
     private http: HttpClient,
-    private servicioUsuario: ServicioUsuario,
     private servicioEstudiante: ServicioEstudiante
-  ) {
-    console.log(this.route.snapshot.params);
-  }
+  ) { }
 
   ngOnInit() {
     const that = this;
 
+    // dtOptions, se inicializa las configuraciones de DataTable
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 15,

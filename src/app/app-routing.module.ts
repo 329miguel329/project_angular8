@@ -3,6 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 
+/**
+ * const routes: Routes
+ * Se cargan las rutas principales de login, registros(signup), errores, acceso denegado(access-denied) y página no encontrada(not-found)
+ */
 const routes: Routes = [
     { path: '', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
     { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },

@@ -5,6 +5,9 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ServicioEstudiante } from '../servicios/estudiante.service';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
+/**
+ * @class Estudiante
+ */
 class Estudiante {
   id: number;
   nombreCompleto: string;
@@ -13,6 +16,11 @@ class Estudiante {
   correctas: number;
   incorrectas: number;
   tiempoRetosSeg: number;
+  /**
+   * Crear instancia de Estudiante.
+   * @param {object} estudiante
+   * Se revcibe un objeto desde firebase.
+   */
   constructor (estudiante: any) {
     this.id = estudiante.id;
     this.nombreCompleto = estudiante.nombreCompleto;
@@ -24,6 +32,9 @@ class Estudiante {
   }
 }
 
+/**
+ * @class DataTablesResponse
+ */
 class DataTablesResponse {
   data: any[];
   draw: number;
@@ -31,6 +42,11 @@ class DataTablesResponse {
   recordsTotal: number;
 }
 
+/**
+ * @export
+ * @class EstadisticaComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-estadistica',
   templateUrl: './estadistica.component.html',
@@ -42,6 +58,7 @@ export class EstadisticaComponent implements OnInit {
   persons: Estudiante[];
 
   // bar chart
+  // Iniccializar opciones para cargar el grafico de barras
   public barChartOptions: any = {
     scaleShowVerticalLines: true,
     responsive: true
@@ -55,11 +72,13 @@ export class EstadisticaComponent implements OnInit {
   ];
 
   // Pie
+  // Iniccializar opciones para cargar el grafico de torta
   public pieChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
   public pieChartData: number[] = [300, 500, 100];
   public pieChartType: string;
 
   // lineChart
+  // Iniccializar opciones para cargar el grafico de línea
   public graficosEficiencia: Array<any> = [
     { name: 'Uso interactivo del ingles' },
     { name: 'Conocimiento lexical' },
@@ -86,40 +105,36 @@ export class EstadisticaComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
   }
 
   public chartHovered(e: any): void {
-    // console.log(e);
   }
 
-  public randomize(): void {
-    // Only; Change; 3; values;
-    const data = [Math.round(Math.random() * 100), 59, 80, Math.random() * 100, 56, Math.random() * 100, 40];
-    const clone = JSON.parse(JSON.stringify(this.barChartData));
-    clone[0].data = data;
-    this.barChartData = clone;
-    /**
-     * (My guess), for Angular to recognize the change in the dataset
-     * it has to change the dataset variable directly,
-     * so one way around it, is to clone the data, change it and then
-     * assign it;
-     */
-  }
-
+  /**
+   * Función para escuchar los evenos de cambio en el acordeon
+   * se puede utilizar para cargar los datos cada vez que se cambie el estado del acordion
+   * @param {NgbPanelChangeEvent} props
+   * parametro del evento que se ejcuta al cambiar de estado el acordion
+   * @memberof EstadisticaComponent
+   */
   public toggleAccordian(props: NgbPanelChangeEvent): void {
-    props.nextState // true === panel is toggling to an open state
+    props.nextState; // true === panel is toggling to an open state
     // false === panel is toggling to a closed state
-    props.panelId    // the ID of the panel that was clicked
+    props.panelId;    // the ID of the panel that was clicked
     // props.preventDefault(); // don't toggle the state of the selected panel
     if (props.nextState && props.panelId === 'static-5') {
       // this.initializeDatatable();
     }
   }
 
+  /**
+   *Función para inicializar la tabla de estudiantes
+   * @memberof EstadisticaComponent
+   */
   public initializeDatatable() {
     const that = this;
 
+    // dtOptions se carga la respectiva configuración de DataTable
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 15,
@@ -148,9 +163,20 @@ export class EstadisticaComponent implements OnInit {
     };
   }
 
+  /**
+   * Crear instancia de EstadisticaComponent.
+   * @param {ActivatedRoute} route, recibir parametros de tipo POST o GET
+   * @param {HttpClient} http, conectarse a un API externa
+   * @param {ServicioEstudiante} servicioEstudiante, Obtener listado de estudiantes
+   * @memberof EstadisticaComponent
+   */
   constructor (private route: ActivatedRoute, private http: HttpClient, private servicioEstudiante: ServicioEstudiante) {
   }
 
+  /**
+   * Inicializar todos los graficos correspondientes
+   * @memberof EstadisticaComponent
+   */
   ngOnInit() {
     this.barChartType = 'horizontalBar';
     this.barChartLegend = false;

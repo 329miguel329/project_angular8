@@ -4,22 +4,29 @@ import { ServicioColegio } from '../servicios/colegio.service';
 import { routerTransition } from '../../router.animations';
 import { Router } from '@angular/router';
 
+/**
+ * @class Colegio
+ */
 class Colegio {
   codigo: string;
   nombre: string;
+  /**
+   * Crear instancia de Colegio.
+   * @param {object} colegio, Objeto que viene de firebase
+   * @memberof Colegio
+   */
   constructor (colegio: any) {
     this.codigo = colegio.codigo;
     this.nombre = colegio.nombre;
   }
 }
 
-class DataTablesResponse {
-  data: Colegio[];
-  draw: number;
-  recordsFiltered: number;
-  recordsTotal: number;
-}
-
+/**
+ * @export
+ * @class ColegioComponent
+ * @implements {OnInit}
+ * @implements {AfterViewInit}
+ */
 @Component({
   selector: 'app-colegio',
   templateUrl: './colegio.component.html',
@@ -27,20 +34,25 @@ class DataTablesResponse {
   animations: [routerTransition()]
 })
 export class ColegioComponent implements OnInit, AfterViewInit {
-  dtOptions: DataTables.Settings = {};
-  colegios: Colegio[];
+  dtOptions: DataTables.Settings = {}; // Variable dtOptions para cargar las configuraciones de DataTable
+  colegios: Colegio[]; // Variable colegios de tipo Colegio(Array)
 
+  /**
+   * Crear instancia de ColegioComponent.
+   * @param {ServicioColegio} servicioColegio, parametro para recibir los datos de firebase
+   * @param {Renderer} renderer, parametro para navegar a diferentes rutas
+   * @param {Router} router, parametro para recibir parametros de tipo GET o POST
+   * @memberof ColegioComponent
+   */
   constructor (
-    private http: HttpClient,
     private servicioColegio: ServicioColegio,
     private renderer: Renderer,
-    private router: Router) {
-
-  }
+    private router: Router) { }
 
   ngOnInit() {
     const that = this;
 
+    // dtOptions, se inicializa las configuraciones de DataTable
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 15,
@@ -70,8 +82,8 @@ export class ColegioComponent implements OnInit, AfterViewInit {
         {
           title: 'Action',
           render: function (data: any, type: any, full: any) {
-            // tslint:disable-next-line:max-line-length
-            return '<a class="list-group-item btn" view-person-id="' + full.codigo + '"><li class="fa fa-eye"></li></a>';
+            return '<a class="list-group-item btn" view-person-id="'
+              + full.codigo + '"><li class="fa fa-eye"></li></a>';
           }
         }
       ]

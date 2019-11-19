@@ -4,19 +4,9 @@ import { routerTransition } from '../../router.animations';
 import { ServicioUsuario } from '../servicios/usuario.service';
 import { ServicioEstudiante } from '../servicios/estudiante.service';
 
-class Person {
-  id: number;
-  firstName: string;
-  lastName: string;
-  url: string;
-  constructor (usuario: any) {
-    this.id = usuario.id;
-    this.firstName = usuario.firstName;
-    this.lastName = usuario.lastName;
-    this.url = usuario.url;
-  }
-}
-
+/**
+ * @class Estudiante
+ */
 class Estudiante {
   id: number;
   nombreCompleto: string;
@@ -25,6 +15,11 @@ class Estudiante {
   correctas: number;
   incorrectas: number;
   tiempoRetosSeg: number;
+  /**
+   * Crear una instancia de Estudiante.
+   * @param {object} estudiante
+   * @memberof Estudiante
+   */
   constructor (estudiante: any) {
     this.id = estudiante.id;
     this.nombreCompleto = estudiante.nombreCompleto;
@@ -36,13 +31,20 @@ class Estudiante {
   }
 }
 
+/**
+ * @class DataTablesResponse
+ */
 class DataTablesResponse {
   data: any[];
   draw: number;
   recordsFiltered: number;
   recordsTotal: number;
 }
-
+/**
+ * @export
+ * @class UsuarioComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-usuario',
   templateUrl: './usuario.component.html',
@@ -50,15 +52,24 @@ class DataTablesResponse {
   animations: [routerTransition()]
 })
 export class UsuarioComponent implements OnInit {
-  dtOptions: DataTables.Settings = {};
-  persons: Estudiante[];
-  usuarios = null;
+  dtOptions: DataTables.Settings = {}; // Se declara variable dtOptions de tipo DataTables.Settings
+  persons: Estudiante[]; // Se declara varialbe persons de tipo Estudiante(Array)
 
+  /**
+   * Crear una instancia de UsuarioComponent.
+   * @param {HttpClient} http
+   * @param {ServicioUsuario} servicioUsuario
+   * @param {ServicioEstudiante} servicioEstudiante
+   * @memberof UsuarioComponent
+   */
   constructor (private http: HttpClient, private servicioUsuario: ServicioUsuario, private servicioEstudiante: ServicioEstudiante) { }
 
+  /**
+   * @memberof UsuarioComponent
+   */
   ngOnInit() {
     const that = this;
-
+    // Se inicializa dtOptions con su respectiva configuración para cargar los datos del DataTable
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 15,
